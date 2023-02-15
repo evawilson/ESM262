@@ -1,0 +1,20 @@
+---
+title: "Assignment_1"
+author: "Eva Wilson"
+date: "2/15/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Prompts
+
+## 1. Why are you taking this course?
+
+I am so excited to be taking this course! My primary motivation is to brush up on my coding and computing skills prior to graduation, such that I am set up to be able to understand and interpret different coding languages as I come across them in my career. I would like to be able to work with large data sets, be comfortable using Github for collarobative purposes, and actively exercise best practices. I envision that most of the programming I will do will involve (1) data wrangling for spatial data science, and (2) using software to clean, wrangle, join, analyze, visualize disjunct data in various forms (e.g., table/excel). 
+
+## 2. What is your data science background?
+
+To date, my coding experience is limited to the 206 Introduction course here at Bren. I have also used R for my group project to wrangle and join data from multiple places and in multiple forms (i.e., tabular data downloaded from an API with shapefiles provided by a client), and carry out an analysis of environmental variables across space and time. Moving forward, I would like to be familiar with programming best practices such that I could (a) participate in conversations that involve granular analysis and (b) offer suggestions for streamlining data analysis needed for certain projects. In other words, my goal is to be a program manager with familiarity, rather than the primary programmer themselves. 
