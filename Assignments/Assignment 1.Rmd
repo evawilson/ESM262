@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 1. Why are you taking this course?
 
-I am so excited to be taking this course! My primary motivation is to brush up on my coding and computing skills prior to graduation, such that I am set up to be able to understand and interpret different coding languages as I come across them in my career. I would like to be able to work with large data sets, be comfortable using Github for collarobative purposes, and actively exercise best practices. I envision that most of the programming I will do will involve (1) data wrangling for spatial data science, and (2) using software to clean, wrangle, join, analyze, visualize disjunct data in various forms (e.g., table/excel). 
+I am so excited to be taking this course! My primary motivation is to brush up on my coding and computing skills prior to graduation, such that I am set up to be able to understand and interpret different coding languages as I come across them in my career. I would like to be able to work with large data sets, be comfortable using Github for collaborative purposes, and actively exercise best practices. I envision that most of the programming I will do will involve (1) data wrangling for spatial data science, and (2) using software to clean, wrangle, join, analyze, visualize disjunct data in various forms (e.g., table/excel). 
 
 ## 2. What is your data science background?
 
