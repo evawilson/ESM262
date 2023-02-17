@@ -7,6 +7,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# attach packages
+library(tidyverse)
+library(janitor)
+library(here)
 ```
 
 ## Project Description
@@ -19,22 +24,22 @@ We designed the following Fire Risk Assessment program (see *Figure 1*).
 
 *Step 3.* Set your parameters. Parameters determine "how" the manipulation is done. Our parameters are represented by blue circles in Figure 1 below. We included the following parameters for each input:
 
-a. Input: Snow pack and soil moisture 
-Parameters: Snow pack threshold value (snow pack input data is less than or equal to X in cm) + soil moisture threshold value (soil moisture input data is less than or equal to X cm^3/cm^3)
-
-b. Input: Weather 
-Parameters: Temperature (weather input data must be greater than or equal to X degrees C) + wind speed (weather input must be greater than or equal to X knots)  
-
-c. Input:Topography 
-Parameters: Slope (topography input data must have a slope angle greater than or equal to dy/dx) + aspect (topography input data must have an aspect greater than or equal to X degrees clockwise)
-
-d. Input: Precipitation
+a. Input: Precipitation 
 Parameters: Daily average (precipitation input data must present a daily average during fire season greater than or equal to XX cm/day)
 
-e. Input: NDVI 
+b. Input: Snow pack and soil moisture 
+Parameters: Snow pack threshold value (snow pack input data is less than or equal to X in cm) + soil moisture threshold value (soil moisture input data is less than or equal to X cm^3/cm^3)
+
+c. Input: Weather 
+Parameters: Temperature (weather input data must be greater than or equal to X degrees C) + wind speed (weather input must be greater than or equal to X knots)  
+
+d. Input: Topography 
+Parameters: Slope (topography input data must have a slope angle greater than or equal to dy/dx) + aspect (topography input data must have an aspect greater than or equal to X degrees clockwise)
+
+e. Input: Fuel Index 
 Parameters: NDVI (NDVI input must be greater than or equal to -1) + fuel size class (fuel index input must be greater than or equal to X hours)
 
-Added together, these parameters generate a single raster output:
-(a + b + c + d + e = f (final output))
+f. Added together, these parameters generate a single raster output:
+a + b + c + d + e = f (where f = final output)
 
-*Figure 1.* [pull from Sarah] 
+![](flowchart.png){width=70%}
