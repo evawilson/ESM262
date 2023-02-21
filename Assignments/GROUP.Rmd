@@ -18,29 +18,30 @@ library(here)
 
 We designed the following Fire Risk Assessment program (see *Figure 1*).
 
-*Step 1.* Determine necessary input data for your program. Input data is the "what" that is manipulated. To generate a fire risk assessment, we identified the following data for input: precipitation, weather, topography, and a fuel index. These inputs are represented by orange squares in Figure 1 below.
+*Step 1.* Determine necessary input data for your program. Input data is the "what" that is manipulated. To generate our fire risk assessment, we identified the following data for input: precipitation, weather, topography, and a fuel index. These inputs are represented by orange squares in Figure 1 below.
 
-*Step 2.* Establish our desired final output. We would like to have a raster file depicting fire probability (aggregate score) by each 10 by 10m pixel. Our final output is represented by a purple square in Figure 1 below. 
+*Step 2.* Establish our desired final output. We would like to have a raster file depicting fire probability (as an aggregate score) by each 10 by 10m pixel. Our final output is represented by a purple hexagon in Figure 1 below. 
 
-*Step 3.* Set your parameters. Parameters determine "how" the manipulation is done. Our parameters are represented by blue circles in Figure 1 below. We included the following parameters for each input:
+*Step 3.* Set your parameters. Parameters determine "how" the manipulation is done. Our parameters are represented by blue circles in Figure 1 below. We included the following parameters for each input (see below). Exact threshold values can be specified by unique users.
 
 a. Input: Precipitation 
-Parameters: Daily average (precipitation input data must present a daily average during fire season greater than or equal to XX cm/day)
+Parameter (threshold calculator): Input data must be a daily average during fire season less than or equal to XX cm/day (to be defined by user)
 
 b. Input: Snow pack and soil moisture 
-Parameters: Snow pack threshold value (snow pack input data is less than or equal to X in cm) + soil moisture threshold value (soil moisture input data is less than or equal to X cm^3/cm^3)
+Parameters (threshold calculators): Snow pack input data is less than or equal to XZ in cm + soil moisture input data is less than or equal to XX cm^3/cm^3 (to be defined by user)
 
 c. Input: Weather 
-Parameters: Temperature (weather input data must be greater than or equal to X degrees C) + wind speed (weather input must be greater than or equal to X knots)  
+Parameter (threshold calculator): Temperature must be greater than or equal to XX degrees C + wind speed must be greater than or equal to XX knots (to be defined by user)  
 
 d. Input: Topography 
-Parameters: Slope (topography input data must have a slope angle greater than or equal to dy/dx) + aspect (topography input data must have an aspect greater than or equal to X degrees clockwise)
+Parameters (threshold calculator): Slope data must have a slope angle greater than or equal to XX dy/dx + aspect input data must have an aspect greater than or equal to XX degrees clockwise (to be defined by user)
 
 e. Input: Fuel Index 
-Parameters: NDVI (NDVI input must be greater than or equal to -1) + fuel size class (fuel index input must be greater than or equal to X hours)
+Parameters (threshold calculator): NDVI input must be less than or equal to XX # between -1-1 + fuel size class input must be greater than or equal to XX hours (to be defined by user)
 
-f. Added together, these parameters generate a single raster output:
+f. Each of these parameters creates an interim output (represented by green parallelograms). Added together using a final "parameter calculation", these interim outputs generate a single raster output:
 a + b + c + d + e = f (where f = final output)
 
-![](flowchart.png)
-
+```{r, echo=FALSE}
+knitr::include_graphics(here("flowchart.png"))
+```
