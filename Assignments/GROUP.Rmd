@@ -20,7 +20,7 @@ We designed the following Fire Risk Assessment program (see *Figure 1*).
 
 *Step 1.* Determine necessary input data for your program. Input data is the "what" that is manipulated. To generate a fire risk assessment, we identified the following data for input: precipitation, weather, topography, and a fuel index. These inputs are represented by orange squares in Figure 1 below.
 
-*Step 2.* Establish our desired final output. We would like to have a raster file depicting fire probability by each 10m by 10m pixel. Our final output is represented by a purple square in Figure 1 below. 
+*Step 2.* Establish our desired final output. We would like to have a raster file depicting fire probability (aggregate score) by each 10 by 10m pixel. Our final output is represented by a purple square in Figure 1 below. 
 
 *Step 3.* Set your parameters. Parameters determine "how" the manipulation is done. Our parameters are represented by blue circles in Figure 1 below. We included the following parameters for each input:
 
@@ -42,4 +42,5 @@ Parameters: NDVI (NDVI input must be greater than or equal to -1) + fuel size cl
 f. Added together, these parameters generate a single raster output:
 a + b + c + d + e = f (where f = final output)
 
-![](flowchart.png){width=70%}
+![](flowchart.png)
+
