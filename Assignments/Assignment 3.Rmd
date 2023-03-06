@@ -50,7 +50,7 @@ nsample = 200
 
 # convert your mean speed to m/s
 mean_speed = (80*.28)
-speeds = rnorm(mean=mean_speed, sd=(10*.28), nsample)
+speeds = rnorm(mean=mean_speed, sd=10*.28, nsample)
 summary(speeds)
 
 # plot speed data to verify output
@@ -68,9 +68,12 @@ powercarspmap = as.data.frame(powercarspmap, col.names=cars$name)
 
 # turn columns to rows for easier plotting later on 
 powercarspmap = powercarspmap %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+
+# calculate mean
+powercarspmap %>% map(mean)
 ```
 
-## Method 2: For Loop
+## Method 2: FOR Loops
 ```{r}
 # before running the for loop, create a data frame that has the # of rows = the # of speed data. The # of columns = the # of cars
 powercarsfor = as.data.frame(matrix(nrow=length(speeds), ncol=nrow(cars)))
@@ -85,6 +88,9 @@ for (i in 1:nrow(cars)) {
 
 # turn columns to rows for easier plotting 
 powercarsfor = powercarsfor %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+
+# calculate mean
+powercarsfor %>% map(mean)
 ```
 
 ## Plotting
@@ -92,14 +98,14 @@ powercarsfor = powercarsfor %>% pivot_longer(cols=everything(), names_to="car", 
 # plotting - create two different plots based on your data 
 pmap_plot = ggplot(powercarspmap, aes(car,power, fill=car))+
   geom_boxplot()+
-  ggtitle("PMap Loop")+
+  ggtitle("PMap")+
   labs(x = "Car", y = "Power (Watts)") +
   theme_minimal()
 pmap_plot
 
 for_plot = ggplot(powercarsfor, aes(car,power, fill=car))+
   geom_boxplot()+
-  ggtitle("For Loop")+
+  ggtitle("FOR Loop")+
   labs(x = "Car", y = "Power (Watts)") +
   theme_minimal()
 for_plot
@@ -107,5 +113,5 @@ for_plot
 # use the ggarrange tool to overlay 
 ggarrange(pmap_plot, for_plot, nrow=2)
 ```
-**Figure 1.** : Comparing the range of power generated (across sampled speeds) for each car type using *pmap* and *for loop*. Car D is the super light car (5000 kg).
+**Figure 1.** : Comparing the range of power consumption for each car type using *pmap* and *FOR*. Car D is the super light car (5000 kg).
 
