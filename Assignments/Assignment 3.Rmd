@@ -7,4 +7,100 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+#attach packages
+library(tidyverse)
+library(purrr)
+library(ggpubr)
+library(ggplot2)
 ```
+
+## Directions
+* Add an additional super light car with mass 5,000 kg and a surface area 10m2
+
+* Compute the mean and maximum power for Cars A, B, C and for your new car, assuming that average highway speed is 80 km/hr with a standard deviation of 10km/hr;  Use 2 different methods to compute the mean and maximum power for each car type; a) **FOR** loop and b) the **pmap** function from **purr**
+
+* Create two boxplots (one for each method (**FOR** and **pmap**)) that show the range of power consumption (across sampled speeds) for each car type.
+
+```{r}
+#source function for auto power 
+source("~/Bren/Q2/ESM 262 Computing for Environmental Science/examples/ESM_262_Examples/R/autopower.R")
+```
+
+## Set Up
+For this analysis, we will use four different car types, a range of speed data and the auto power function to calculate the power required to maintain various speeds. The four different car types are as follows: 
+
+* car A  mass 20000 kg, area 22 m^2^
+
+* car B mass 65000 kg, area 30 m^2^
+
+* car C mass 38000 kg area 22 m^2^
+
+* car D mass 5000 kg and area 10m^2
+
+Mean highway speed of data is 80 km/hr with standard deviation of 10 km/hr 
+
+```{r}
+# create dataframe for cars 
+cars = data.frame(name = c("A","B","C","D"),mass=c(10000,65000,38000,5000), area = c(22,30,22,10))
+```
+
+```{r}
+# create speed data sample
+nsample = 200
+
+# convert your mean speed to m/s
+mean_speed = (80*.28)
+speeds = rnorm(mean=mean_speed, sd=(10*.28), nsample)
+summary(speeds)
+
+# plot speed data to verify output
+plot(density(speeds), ylab="Distribution of Speeds in (m/s)")
+```
+
+## Method 1: Run PMap
+```{r}
+# run pmap loop - various loop data are car areas and masses, using the autopower function and different speeds
+powercarspmap = pmap(list(A = cars$area, m=cars$mass), auto_power, V=speeds)
+
+# add values to data frame. 
+# name columns after the car names 
+powercarspmap = as.data.frame(powercarspmap, col.names=cars$name)
+
+# turn columns to rows for easier plotting later on 
+powercarspmap = powercarspmap %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+```
+
+## Method 2: For Loop
+```{r}
+# before running the for loop, create a data frame that has the # of rows = the # of speed data. The # of columns = the # of cars
+powercarsfor = as.data.frame(matrix(nrow=length(speeds), ncol=nrow(cars)))
+
+# add column names 
+colnames(powercarsfor) = cars$name
+
+# run the for loop and add values to data frame
+for (i in 1:nrow(cars)) {
+  powercarsfor[,i] = auto_power(A=cars$area[i], m=cars$mass[i], V=speeds)
+}
+
+# turn columns to rows for easier plotting 
+powercarsfor = powercarsfor %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+```
+
+## Plotting
+```{r}
+# plotting - create two different plots based on your data 
+pmap_plot = ggplot(powercarspmap, aes(car,power, fill=car))+
+  geom_boxplot()+
+  ggtitle("PMap Loop")+
+  labs(x = "Car", y = "Power (Watts)") +
+  theme_minimal()
+
+for_plot = ggplot(powercarsfor, aes(car,power, fill=car))+
+  geom_boxplot()+
+  ggtitle("For Loop")+
+  labs(x = "Car", y = "Power (Watts)") +
+  theme_minimal()
+
+#use the ggarrange tool to overlay 
+ggarrange(pmap_plot, for_plot, nrow=2)
