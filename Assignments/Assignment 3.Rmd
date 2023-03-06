@@ -23,7 +23,7 @@ library(ggplot2)
 
 ```{r}
 #source function for auto power 
-source("~/Bren/Q2/ESM 262 Computing for Environmental Science/examples/ESM_262_Examples/R/autopower.R")
+source("~/Desktop/ESM262_Eva/R/auto_power.R")
 ```
 
 ## Set Up
@@ -95,12 +95,17 @@ pmap_plot = ggplot(powercarspmap, aes(car,power, fill=car))+
   ggtitle("PMap Loop")+
   labs(x = "Car", y = "Power (Watts)") +
   theme_minimal()
+pmap_plot
 
 for_plot = ggplot(powercarsfor, aes(car,power, fill=car))+
   geom_boxplot()+
   ggtitle("For Loop")+
   labs(x = "Car", y = "Power (Watts)") +
   theme_minimal()
+for_plot
 
-#use the ggarrange tool to overlay 
+# use the ggarrange tool to overlay 
 ggarrange(pmap_plot, for_plot, nrow=2)
+```
+**Figure 1.** : Comparing the range of power generated (across sampled speeds) for each car type using *pmap* and *for loop*. Car D is the super light car (5000 kg).
+
