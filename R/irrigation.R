@@ -18,12 +18,13 @@ irrigation=function(precipitation,evapotranspiration) {
     4
   } else {5}
   
+  
   ### how much should you irrigate?
   irrigation_amount = case_when((crop_type == 'almonds') ~ 5,
                                 (crop_type == 'cotton') ~ 3,
                                 (crop_type == 'vineyard') ~ 1)
 
-  
+  ## return two outputs
   return(list(irrigation_time, irrigation_amount))
   
 }
