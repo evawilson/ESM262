@@ -1,0 +1,68 @@
+---
+title: "Assignment 4"
+author: "Eva Wilson"
+date: "3/6/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# attach packages 
+library(tidyverse)
+library(purrr)
+library(here)
+```
+
+## Assignment Instructions 
+
+Write a function that takes a vector of fish names and always returns three items:
+
+1. the most common fish,
+2. the rarest fish
+3. the total number of fish
+
+Create an Rmarkdown to demonstrate the use of your function with fish.txt - which is under Data on ESM_262_Examples
+
+[Data on ESM_262_Examples]{https://github.com/naomitague/ESM_262_Examples/blob/main/Data/fish.txt}
+
+Turn in on Gauchospace what your function returns when you run with fish.txt!
+
+## Step 1. Define function to summarize the characteristics of 1 fish catch
+```{r}
+# define function to find and output the most common fish, most rare fish, and total number of fish in the catch
+summarize_fish_catch = function(fish_data){
+
+  # check if the data input is in vector form 
+  if(!is.vector(fish_data)){
+    stop("Data input into this function is not in vector form")
+  }
+  #find the fish that is the most common
+  most_common <- names(which.max(summary(as.factor(fish_data))))
+
+  #find the fish that is the most rare
+  most_rare <- names(which.min(summary(as.factor((fish_data)))))
+
+  #find the total number of fish
+  total_fish <- length(fish_data)
+  
+  #return outputs as a list
+  return(list(most_common, most_rare, total_fish))
+}
+```
+
+## Step 2. Load fish.txt data in and apply the above function
+```{r}
+# read in your data
+fish_df <- read.delim2(here("fish.txt"))
+
+# turn df into a vector for input into function
+fish <- fish_df[[1]]
+
+# return results
+results = summarize_fish_catch(fish)
+results
+```
+
+
+
