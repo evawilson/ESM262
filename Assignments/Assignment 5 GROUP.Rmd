@@ -34,25 +34,38 @@ Put this in a git repo that includes an R subdirectory a tests subsdirectory and
 
 ## Step 1. Source function 
 ```{r}
-here("")
+here("irrigation.R")
+```
+
+## Step 2. List assumptions 
+
+1. We assume that ET falls within a range? 
+2. There are 50 fields in our analysis
+
+## Step 3. Create data frames to test functionality
+```{r}
+# create vector of crop type
+possible.crop = c("almond","vineyard","cotton")
+# use sample to simulate a random recording of fields for analysis
+possible.crop = base::sample(possible.crop, size=50, replace=T)
+# possible.crop as a factor for better plotting
+possible.crop = as.factor(possible.crop)
+# to quickly get frequencies of different crops and to plot 
+summary(possible.crop)
+plot(possible.crop, col="blue")
 ```
 
 
-## Step 2. Create data to test functionality
-```{r}
-testdata = rnorm(mean =50, sd=2, n=500)
-summary(testdata)
-
 # use a *for* loop to run the function for the data 
+
+
 
 # repeat loop 
 
 # graph results
 ggplot(data = , aes(x=, y=)+
-         line?
+        +geom_histogram(stat="count")
          labs()
-```
-
 
 
 # it is act
