@@ -105,5 +105,5 @@ ggplot(data = , aes(x=, y=)+
 here("irrigation.R")
 # put your test in a file
 # LET ME KNOW IF YOU HAVE PROBLEMS ACCESSING THIS? I JUST CREATED TWO BASIC FUNCTION TESTS USING EXPECT_EQUAL
-test_file("/Users/evawilson/Desktop/ESM262_Eva/tests/irrigation_works.R")
+test_file(here("irrigation_works.R"))
 ```
