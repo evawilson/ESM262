@@ -48,39 +48,45 @@ source(here("R/irrigation.R"))
 ## Step 3. Create data frames to test functionality
 ```{r}
 # create vector of crop type
-possible.crop = c("wheat","corn","barley")
+possible_crop = c("wheat","corn","barley")
 # use sample to simulate a random recording of fields for analysis
-possible.crop = base::sample(possible.crop, size=50, replace=T)
+possible_crop = base::sample(possible_crop, size=50, replace=T)
 # possible.crop as a factor for better plotting
-possible.crop = as.factor(possible.crop)
+possible_crop = as.factor(possible_crop)
 # to quickly get frequencies of different crops and to plot 
-summary(possible.crop)
-plot(possible.crop, col="blue")
+summary(possible_crop)
+plot(possible_crop, col="blue")
 
 # specify base ET (mm/day) (see assumptions)
-ET_wheat = 2.04
-ET_wheat = 2.54
-ET_barley = 3.00
+evapotranspiration = case_when((possible_crop == 'wheat') ~ 2.04,
+                                (possible_crop == 'corn') ~ 2.54,
+                                (possible_crop == 'barley') ~ 3.00)
 
 # generate a normal distribution of random precipitation data
 # note that 10 mm converts to 0.394 inches.  
-precipitation <- rnorm(100, mean = 2.5, sd = 1)
+precipitation <- rnorm(50, mean = 2.5, sd = 1)
 # view the first 10 values of the precipitation data
 head(precipitation, 10)
 # quickly visualize to see distribution
 plot(density(precipitation))
 
-# combine generated data into a single frame 
-
-#1.CROP_TYPE
-#2. ET VALUE (CONSISTENTLY 2.04)
-#3. OUR RANGE OF PRECIP (LOG DISTRIBUTION)
-
+# combine generated data into a single frame  called irrigation summary 
+irrigation_summary = cbind.data.frame(possible_crop, evapotranspiration, precipitation)
+# change first column name to "crop name"
+colnames(irrigation_summary)[1] <- "crop_name"
+irrigation_summary
 ```
 
 # Step 4. Use the *pmap* loop to run the function for the data 
 ```{r}
-# run pmap to generate two outputs:
+# pmap runs a function for each value in a list of parameters, with other parameters set for each iteration
+
+# CLASS EXAMPLE" powerall2 = pmap(list(A = possible_cars$area, m=possible_cars$mass), autopower, V=speeds)
+
+# lets turn to a data frame for easier graphing
+# we can add column names
+# CLASS EXAMPLE powerall2 = as.data.frame(powerall2, col.names=possible_cars$name)
+
 # soil moisture availability output and amount output
 
 knitr::include_graphics(here("brainstorm_irrigation.png"))
