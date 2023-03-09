@@ -1,9 +1,17 @@
 #' irrigation 
 #' 
-#' @param precipitation (mm/day)
-#' @param evapotranspiration (mm/day)
+#' @param precipitation (PE) (mm/day)
+#' @param evapotranspiration (ET) (mm/day)
+#' @param crop type (almonds, cotton, vineyard)
 
 irrigation=function(PE,ET) {
+  
+  ### start with some error checking - we should never have negative ET or PE values
+  if (length(ET) < 0)
+    return("ET value is negative")
+  
+  if (length(PE) < 0)
+    return("PE value is negative")
   
   ### how many days after rain event should you irrigate?
   irrigation_time = if (ET - PE <= 5) {
