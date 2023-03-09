@@ -18,10 +18,10 @@ library(testthat)
 ## Assignment Instructions 
 
 Design a function - you can pick any subject and you can even make up the equations as long as they conceptually make sense
-  Make sure it has at least 2 inputs and 1 parameter (ideally more) and at least 2 outputs
-  Code your function in R, save as a R file in subdirectory called R
-  Make sure you include documentation (both at the top as we’ve shown in past examples, and inline)
-  Include some error checking
+  X Make sure it has at least 2 inputs and 1 parameter (ideally more) and at least 2 outputs
+  X Code your function in R, save as a R file in subdirectory called R
+  X Make sure you include documentation (both at the top as we’ve shown in past examples, and inline)
+  X Include some error checking
 
 In an Rmarkdown file, generate some data for 2 of the function inputs
   Use a for loop to run the function for the data
@@ -39,8 +39,13 @@ here("irrigation.R")
 
 ## Step 2. List assumptions 
 
-1. We assume that ET falls within a range? 
-2. There are 50 fields in our analysis
+1. **Precipitation:** The distribution of precipitation data can vary depending on the location and the time period being analyzed. However, in general, precipitation data is often positively skewed and can exhibit a long tail to the right, which means that the data can have extreme values or outliers.
+
+Given the positively skewed nature of precipitation data, we use a logarithmic transformation to reduce the impact of extreme values and make the distribution more symmetrical. We assume that the mean precipitation is 10 mm/day with a standard deviation of 2 mm/day. 10 mm is approximately equal to 0.3937 inches. 
+
+2. **ET:** We assume that average ET across all crop types is 2.04.
+
+3. **Possible Crops:** There are 50 fields in our analysis. We assume each occurs equally (we use random sample).
 
 ## Step 3. Create data frames to test functionality
 ```{r}
@@ -53,30 +58,36 @@ possible.crop = as.factor(possible.crop)
 # to quickly get frequencies of different crops and to plot 
 summary(possible.crop)
 plot(possible.crop, col="blue")
+
+# specify base ET (mm/day) (see assumptions)
+base_ET = 2.04
+
+# generate a log-normal distribution of random precipitation data
+# note that 10 mm converts to 0.394 inches.  
+precipitation <- rlnorm(100, meanlog = 10, sdlog = 2)
+# view the first 10 values of the precipitation data
+head(precipitation, 10)
+# quickly visualize to see distribution
+plot(density(precipitation))
 ```
 
-
 # use a *for* loop to run the function for the data 
-
-
+```{r}
+HOW DO WE COMBINE THESE TWO OUTPUTS using ?? 
+```
 
 # repeat loop 
 
 # graph results
+```{r}
 ggplot(data = , aes(x=, y=)+
-        +geom_histogram(stat="count")
+        geom_histogram(stat="count")+
          labs()
+```
 
-
-# it is act
+# write two tests to understand if this is working
 ```{r}
 names(summary(testdata))
 summary(testdata)["Max."]
 expect_true((summary(testdata)"Max."]-summary(testdata)["Min."]>0))
 ```
-
-
-```{r}
-
-```
-
