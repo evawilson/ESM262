@@ -2,7 +2,7 @@
 #' 
 #' @param precipitation (PE) (mm/day)
 #' @param evapotranspiration (ET) (mm/day)
-#' @param crop type (almonds, cotton, vineyard)
+#' @param grass type (wheat, corn, barley)
 
 irrigation=function(PE,ET) {
   
@@ -28,9 +28,9 @@ irrigation=function(PE,ET) {
   
   
   ### how much should you irrigate?
-  irrigation_amount = case_when((crop_type == 'almonds') ~ 5,
-                                (crop_type == 'cotton') ~ 3,
-                                (crop_type == 'vineyard') ~ 1)
+  irrigation_amount = case_when((crop_type == 'wheat') ~ 5,
+                                (crop_type == 'corn') ~ 3,
+                                (crop_type == 'barley') ~ 1)
 
   ## return two outputs
   return(list(irrigation_time, irrigation_amount))
