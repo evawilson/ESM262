@@ -94,9 +94,9 @@ knitr::include_graphics(here("brainstorm_irrigation.png"))
 # graph results
 ```{r}
 # NOT SURE HOW TO CAPTURE TIME COMPONENT IN A GRAPH???? 
-ggplot(data = , aes(x=, y=)+
-        geom_histogram(stat="count")+
-         labs()
+# ggplot(data = , aes(x=, y=)+
+       # geom_histogram(stat="count")+
+         #labs()
 ```
 
 # run two tests to make sure this function is working
@@ -105,5 +105,5 @@ ggplot(data = , aes(x=, y=)+
 here("irrigation.R")
 # put your test in a file
 # LET ME KNOW IF YOU HAVE PROBLEMS ACCESSING THIS? I JUST CREATED TWO BASIC FUNCTION TESTS USING EXPECT_EQUAL
-test_file(here("irrigation_works.R"))
+#test_file(here("irrigation_works.R"))
 ```
