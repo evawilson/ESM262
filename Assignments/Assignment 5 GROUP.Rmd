@@ -34,7 +34,7 @@ Put this in a git repo that includes an R subdirectory a tests subsdirectory and
 
 ## Step 1. Source function 
 ```{r}
-here("irrigation.R")
+source(here("R/irrigation.R"))
 ```
 
 ## Step 2. List assumptions 
