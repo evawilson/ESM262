@@ -1,9 +1,9 @@
 #' irrigation 
 #' 
-#' @param precipitation (mm)
-#' @param evapotranspiration (mm)
+#' @param precipitation (mm/day)
+#' @param evapotranspiration (mm/day)
 
-irrigation=function(precipitation,evapotranspiration) {
+irrigation=function(PE,ET) {
   
   ### how many days after rain event should you irrigate?
   irrigation_time = if (ET - PE <= 5) {
@@ -29,6 +29,3 @@ irrigation=function(precipitation,evapotranspiration) {
   
 }
 
-Outputs:
-when
-how much 
