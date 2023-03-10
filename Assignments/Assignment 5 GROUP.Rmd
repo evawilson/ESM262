@@ -86,14 +86,14 @@ irrigation_df <- as.data.frame(possible_crop) %>%
   rename(crop_type = possible_crop)
   
 
-### Now add ET and precip into our df
+### Now add ET and precip into our df using dplyr::mutate()
 irrigation_df <- irrigation_df %>% 
   ## create column for ET and specify values based on `crop_type`
   mutate(ET = case_when((crop_type == 'wheat') ~ 2.04,
                         (crop_type == 'corn') ~ 2.54,
                         (crop_type == 'barley') ~ 3.00)) %>% 
-  ## add in precip values into new column
-  cbind(precipitation)
+  ## create precip values into new column
+  mutate(precipitation = rnorm(50, mean = 2.5, sd = 1))
 
 
 ### Finally, add empty columns for whether to irrigate
@@ -101,6 +101,9 @@ irrigation_df <- irrigation_df %>%
 irrigation_df <- irrigation_df %>% 
   add_column(should_irrigate = NA,
              irrigation_amt_L = NA)
+
+### NOTE: maybe don't create these columns before running pmap?
+### potentially make this a part of the fxn....
 ```
 
 
@@ -109,6 +112,7 @@ irrigation_df <- irrigation_df %>%
 # irrigation(ET = irrigation_df$ET[2],
 #            precip = irrigation_df$precipitation[2],
 #            crop_type = irrigation_df$crop_type[2])
+
 
 ### need to fix the return to make sure it fills columns correctly
 ```
