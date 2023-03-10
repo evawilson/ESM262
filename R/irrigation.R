@@ -1,39 +1,40 @@
 #' irrigation 
 #' 
-#' @param precipitation (PE) (mm/day)
+#' @param precip (PE) (mm/day)
 #' @param evapotranspiration (ET) (mm/day)
-#' @param grass type (wheat, corn, barley)
+#' @param crop_type type (wheat, corn, barley)
+#' @returns how many days after rain event irrigation should take place and how much the crops should be irrigated
 
-irrigation=function(PE,ET) {
+irrigation=function(precip, ET, crop_type) {
   
   ### start with some error checking - we should never have negative ET or PE values
   if (length(ET) < 0)
     return("ET value is negative")
   
-  if (length(PE) < 0)
+  if (length(precip) < 0)
     return("PE value is negative")
   
-  ### how many days after rain event should you irrigate?
-  irrigation_time = if (ET - PE <= 5) {
-    0
-  } else if (ET - PE <= 10) {
-    1
-  } else if (ET - PE <= 15) {
-    2
-  } else if (ET - PE <= 20) {
-    3
-  } else if (ET - PE <= 25) {
-    4
-  } else {5}
   
+  ### use PE and ET as proxy for available soil moisture
+  soil_moisture_avail = precip - ET
+  
+  ### how many days after rain event should you irrigate?
+  should_irrigate = if (soil_moisture_avail < 0) {
+    FALSE
+  } else {TRUE}
   
   ### how much should you irrigate?
-  irrigation_amount = case_when((crop_type == 'wheat') ~ 5,
-                                (crop_type == 'corn') ~ 3,
-                                (crop_type == 'barley') ~ 1)
+  irrigation_amount = if (should_irrigate == TRUE) {
+    case_when((crop_type == 'wheat') ~ 5,
+              (crop_type == 'corn') ~ 3,
+              (crop_type == 'barley') ~ 1)
+    
+  } else {0}
+                          
+                          
 
   ## return two outputs
-  return(list(irrigation_time, irrigation_amount))
+  return(list(soil_moisture_avail, should_irrigate, irrigation_amount))
   
 }
 
