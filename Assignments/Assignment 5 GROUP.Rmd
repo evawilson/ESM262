@@ -77,6 +77,43 @@ colnames(irrigation_summary)[1] <- "crop_name"
 irrigation_summary
 ```
 
+(Example for another method of creating dataframe):
+```{r}
+### after creating sample of crops and making them vectors,
+### turn that vector list into a dataframe
+irrigation_df <- as.data.frame(possible_crop) %>%
+  ## change col name
+  rename(crop_type = possible_crop)
+  
+
+### Now add ET and precip into our df
+irrigation_df <- irrigation_df %>% 
+  ## create column for ET and specify values based on `crop_type`
+  mutate(ET = case_when((crop_type == 'wheat') ~ 2.04,
+                        (crop_type == 'corn') ~ 2.54,
+                        (crop_type == 'barley') ~ 3.00)) %>% 
+  ## add in precip values into new column
+  cbind(precipitation)
+
+
+### Finally, add empty columns for whether to irrigate
+### and how much. These will get filled by pmap in next step.
+irrigation_df <- irrigation_df %>% 
+  add_column(should_irrigate = NA,
+             irrigation_amt_L = NA)
+```
+
+
+```{r}
+### test fxn
+# irrigation(ET = irrigation_df$ET[2],
+#            precip = irrigation_df$precipitation[2],
+#            crop_type = irrigation_df$crop_type[2])
+
+### need to fix the return to make sure it fills columns correctly
+```
+
+
 # Step 4. Use the *pmap* loop to run the function for the data 
 ```{r}
 # pmap runs a function for each value in a list of parameters, with other parameters set for each iteration
