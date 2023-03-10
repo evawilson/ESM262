@@ -74,6 +74,8 @@ results <- pmap(list(crop_type = possible_crop$crop_type,
 
 ### convert results into dataframe
 results_df <- as.data.frame(do.call(rbind, results)) %>% 
+  ## rbind makes each row correspond with crop type
+  ## add names for clarity and untangling data
   add_column(crop_type = possible_crop$crop_type)
 
 
@@ -85,6 +87,7 @@ results_df <- as.data.frame(do.call(rbind, results)) %>%
 wheat <- results_df %>% 
   filter(crop_type == 'wheat') %>% 
   unnest(cols = c(V1, V2, V3)) %>% 
+  ## add in precip data for later graphing
   cbind(precipitation)
 
 ## results for corn
@@ -101,6 +104,7 @@ barley <- results_df %>%
 
 ### put all data together in nice tidy format!
 irrigation_results <- rbind(wheat, corn, barley) %>% 
+  ## rename first thre columns to function outputs
   rename(soil_moist_avail = V1,
          should_irrigate = V2,
          irrigation_amt = V3)
