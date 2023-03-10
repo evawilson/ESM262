@@ -45,9 +45,9 @@ source(here("R/irrigation.R"))
 
 3. **Possible Crops:** There are 50 fields in our analysis that are subject to the same rainfall. We assume each occurs equally (we use random sample).
 
-## Step 3. Create data frames to test functionality
+## Step 3. Create data frames to run function
 ```{r}
-### Create data frame with crop types and respective ET values (mm/day)
+### create data frame with crop types and respective ET values (mm/day)
 possible_crop <- data.frame(crop_type = c("wheat","corn","barley"),
                             ET = c(2.04, 2.54, 3.00))
 
@@ -55,31 +55,25 @@ possible_crop <- data.frame(crop_type = c("wheat","corn","barley"),
 ### generate a normal distribution of random precipitation data
 ### note that 10 mm converts to 0.394 inches.  
 precipitation <- rnorm(50, mean = 2.5, sd = 1)
-
-
-### Check first 10 values & quickly visualize precip data
-# head(precipitation, 10)
-# plot(density(precipitation))
 ```
 
-
-
-# Step 4. Use the *pmap* loop to run the function for the data 
-
+## Step 4. Use the *pmap* loop to run the function for the data 
 ```{r}
 ### obtain results using pmap
 results <- pmap(list(crop_type = possible_crop$crop_type,
                   ET = possible_crop$ET),
              irrigation, precip = precipitation)
+results
 
-### convert results into dataframe
+### convert results into data frame
 results_df <- as.data.frame(do.call(rbind, results)) %>% 
   ## rbind makes each row correspond with crop type
   ## add names for clarity and untangling data
   add_column(crop_type = possible_crop$crop_type)
 
+results_df
 
-### Output from pmap is nested lists (each cell of df is a list)
+### output from pmap is nested lists (each cell of df is a list)
 ### b/c function outputs list of 3 values. To deal with this,
 ### unnest by rows (crop type) and then bind into single df
 
@@ -108,30 +102,24 @@ irrigation_results <- rbind(wheat, corn, barley) %>%
   rename(soil_moist_avail = V1,
          should_irrigate = V2,
          irrigation_amt = V3)
+
+irrigation_results
 ```
 
-
+# Step 5. Graph results
 ```{r}
-# pmap runs a function for each value in a list of parameters, with other parameters set for each iteration
+### plot the relationship between soil moisture availability and irrigation amt
+### facet_wrap by crop_type 
+irrigation_plot = ggplot(data = irrigation_results, aes(x= soil_moist_avail, y= irrigation_amt))+
+  geom_point()+
+  facet_wrap(~ crop_type, ncol = 3)+
+  ggtitle("Relationship between soil moisture availability and the need for irrigation")+
+  labs(x = "Soil Moisture Availability (mm)", y = "Irrigation Amount (mm)") +
+  theme_minimal()
 
-# CLASS EXAMPLE" powerall2 = pmap(list(A = possible_cars$area, m=possible_cars$mass), autopower, V=speeds)
-
-# lets turn to a data frame for easier graphing
-# we can add column names
-# CLASS EXAMPLE powerall2 = as.data.frame(powerall2, col.names=possible_cars$name)
-
-# soil moisture availability output and amount output
-
-knitr::include_graphics(here("brainstorm_irrigation.png"))
+irrigation_plot
 ```
-
-# Step 5. Graph results (KATHERYN)
-```{r}
-# we can plot the soil moisture availability and facet_wrap by crop_type 
-# ggplot(data = , aes(x=, y=)+
-       # geom_histogram(stat="count")+
-         #labs()
-```
+**Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Here, we see that wheat is the most water intensive crop of the three.
 
 # Step 6. Run two tests to make sure this function is working (KATHERYN)
 ```{r}
