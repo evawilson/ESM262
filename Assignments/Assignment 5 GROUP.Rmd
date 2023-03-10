@@ -47,78 +47,66 @@ source(here("R/irrigation.R"))
 
 ## Step 3. Create data frames to test functionality
 ```{r}
-# create vector of crop type
-possible_crop = c("wheat","corn","barley")
-# use sample to simulate a random recording of fields for analysis
-possible_crop = base::sample(possible_crop, size=50, replace=T)
-# possible.crop as a factor for better plotting
-possible_crop = as.factor(possible_crop)
-# to quickly get frequencies of different crops and to plot 
-summary(possible_crop)
-plot(possible_crop, col="blue")
+### Create data frame with crop types and respective ET values (mm/day)
+possible_crop <- data.frame(crop_type = c("wheat","corn","barley"),
+                            ET = c(2.04, 2.54, 3.00))
 
-# specify base ET (mm/day) (see assumptions)
-evapotranspiration = case_when((possible_crop == 'wheat') ~ 2.04,
-                                (possible_crop == 'corn') ~ 2.54,
-                                (possible_crop == 'barley') ~ 3.00)
 
-# generate a normal distribution of random precipitation data
-# note that 10 mm converts to 0.394 inches.  
+### generate a normal distribution of random precipitation data
+### note that 10 mm converts to 0.394 inches.  
 precipitation <- rnorm(50, mean = 2.5, sd = 1)
-# view the first 10 values of the precipitation data
-head(precipitation, 10)
-# quickly visualize to see distribution
-plot(density(precipitation))
 
-# combine generated data into a single frame  called irrigation summary 
-irrigation_summary = cbind.data.frame(possible_crop, evapotranspiration, precipitation)
-# change first column name to "crop name"
-colnames(irrigation_summary)[1] <- "crop_name"
-irrigation_summary
+
+### Check first 10 values & quickly visualize precip data
+# head(precipitation, 10)
+# plot(density(precipitation))
 ```
 
-(Example for another method of creating dataframe):
-```{r}
-### after creating sample of crops and making them vectors,
-### turn that vector list into a dataframe
-irrigation_df <- as.data.frame(possible_crop) %>%
-  ## change col name
-  rename(crop_type = possible_crop)
-  
-
-### Now add ET and precip into our df using dplyr::mutate()
-irrigation_df <- irrigation_df %>% 
-  ## create column for ET and specify values based on `crop_type`
-  mutate(ET = case_when((crop_type == 'wheat') ~ 2.04,
-                        (crop_type == 'corn') ~ 2.54,
-                        (crop_type == 'barley') ~ 3.00)) %>% 
-  ## create precip values into new column
-  mutate(precipitation = rnorm(50, mean = 2.5, sd = 1))
-
-
-### Finally, add empty columns for whether to irrigate
-### and how much. These will get filled by pmap in next step.
-irrigation_df <- irrigation_df %>% 
-  add_column(should_irrigate = NA,
-             irrigation_amt_L = NA)
-
-### NOTE: maybe don't create these columns before running pmap?
-### potentially make this a part of the fxn....
-```
-
-
-```{r}
-### test fxn
-# irrigation(ET = irrigation_df$ET[2],
-#            precip = irrigation_df$precipitation[2],
-#            crop_type = irrigation_df$crop_type[2])
-
-
-### need to fix the return to make sure it fills columns correctly
-```
 
 
 # Step 4. Use the *pmap* loop to run the function for the data 
+
+```{r}
+### obtain results using pmap
+results <- pmap(list(crop_type = possible_crop$crop_type,
+                  ET = possible_crop$ET),
+             irrigation, precip = precipitation)
+
+### convert results into dataframe
+results_df <- as.data.frame(do.call(rbind, results)) %>% 
+  add_column(crop_type = possible_crop$crop_type)
+
+
+### Output from pmap is nested lists (each cell of df is a list)
+### b/c function outputs list of 3 values. To deal with this,
+### unnest by rows (crop type) and then bind into single df
+
+## results for wheat
+wheat <- results_df %>% 
+  filter(crop_type == 'wheat') %>% 
+  unnest(cols = c(V1, V2, V3)) %>% 
+  cbind(precipitation)
+
+## results for corn
+corn <- results_df %>% 
+  filter(crop_type == 'corn') %>% 
+  unnest(cols = c(V1, V2, V3)) %>% 
+  cbind(precipitation)
+
+## results for barley
+barley <- results_df %>% 
+  filter(crop_type == 'barley') %>% 
+  unnest(cols = c(V1, V2, V3)) %>% 
+  cbind(precipitation)
+
+### put all data together in nice tidy format!
+irrigation_results <- rbind(wheat, corn, barley) %>% 
+  rename(soil_moist_avail = V1,
+         should_irrigate = V2,
+         irrigation_amt = V3)
+```
+
+
 ```{r}
 # pmap runs a function for each value in a list of parameters, with other parameters set for each iteration
 
