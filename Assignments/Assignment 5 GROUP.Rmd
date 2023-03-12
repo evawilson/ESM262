@@ -111,13 +111,16 @@ irrigation_results
 ### plot the relationship between soil moisture availability and irrigation amt
 ### facet_wrap by crop_type 
 irrigation_plot = ggplot(data = irrigation_results, aes(x= soil_moist_avail, y= irrigation_amt))+
-  geom_point()+
-  facet_wrap(~ crop_type, ncol = 3)+
+  geom_jitter(aes(color = crop_type))+ # better displays the points by spreading them out given our small dataset
+  facet_wrap(~ crop_type)+
   ggtitle("Relationship between soil moisture availability and the need for irrigation")+
-  labs(x = "Soil Moisture Availability (mm)", y = "Irrigation Amount (mm)") +
+  labs(x = "Soil Moisture Availability (mm)", 
+       y = "Irrigation Amount (mm)",
+       ) +
   theme_minimal()
 
 irrigation_plot
+
 ```
 **Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Here, we see that wheat is the most water intensive crop of the three.
 
