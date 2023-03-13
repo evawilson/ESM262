@@ -36,7 +36,7 @@ possible_crop <- data.frame(crop_type = c("wheat","corn","barley"),
 
 ### generate a normal distribution of random precipitation data
 ### note that 10 mm converts to 0.394 inches.  
-precipitation <- rnorm(50, mean = 2.5, sd = 1)
+precipitation <- abs(rnorm(50, mean = 2.5, sd = 1))
 ```
 
 ## Step 4. Use the *pmap* loop to run the function for the data 
