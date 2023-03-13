@@ -1,6 +1,6 @@
 ---
 title: "Assignment 5"
-author: "Eva Wilson"
+author: "Eva Wilson, Nick McManus, and Katheryn Moya"
 date: "3/8/2023"
 output: html_document
 ---
@@ -14,23 +14,6 @@ library(purrr)
 library(tidyverse)
 library(testthat)
 ```
-
-## Assignment Instructions 
-
-Design a function - you can pick any subject and you can even make up the equations as long as they conceptually make sense
-  X Make sure it has at least 2 inputs and 1 parameter (ideally more) and at least 2 outputs
-  X Code your function in R, save as a R file in subdirectory called R
-  X Make sure you include documentation (both at the top as we’ve shown in past examples, and inline)
-  X Include some error checking
-
-In an Rmarkdown file, generate some data for 2 of the function inputs
-  Use a for loop to run the function for the data
-  Repeat the “looping” using something from the “purrr” package
-  Graph results (you can decide what the most interesting way to graph - you just need to make one graph)
-
-X Write at least 2 tests for your function; store in a separate test file
-
-Put this in a git repo that includes an R subdirectory a tests subsdirectory and an Rmarkdown file and submit the link on Gauchospace (or you can put all of this in a new git repo or a subdirectory of an existing git repo)
 
 ## Step 1. Source function 
 ```{r}
@@ -50,7 +33,6 @@ source(here("R/irrigation.R"))
 ### create data frame with crop types and respective ET values (mm/day)
 possible_crop <- data.frame(crop_type = c("wheat","corn","barley"),
                             ET = c(2.04, 2.54, 3.00))
-
 
 ### generate a normal distribution of random precipitation data
 ### note that 10 mm converts to 0.394 inches.  
@@ -112,31 +94,30 @@ irrigation_results
 ### facet_wrap by crop_type 
 irrigation_plot = ggplot(data = irrigation_results, aes(x= soil_moist_avail, y= irrigation_amt))+
   geom_jitter(aes(color = crop_type), size = 2, alpha = 0.7) + # better displays the points by spreading them out given our small dataset
-  scale_color_manual(values = c('burlywood4', 'goldenrod2', 'wheat2')) +
+  scale_color_manual(values = c('burlywood4', 'olivedrab4', 'darkgoldenrod3')) +
   scale_y_continuous(breaks = seq(from = 0, to = 6, by = 1)) +
   facet_wrap(~ crop_type) +
-  ggtitle("Relationship between soil moisture availability and the need for irrigation")+
   labs(x = "Soil Moisture Availability (mm)", 
-       y = "Irrigation Amount (mm)") +
+       y = "Irrigation Amount (mm)",
+       title = "Crop Irrigation Requirements For Varying Soil Moisture Availability") +
   theme_bw() +
   theme(
     axis.title.x = element_text(face = 'bold', vjust = -1),
     axis.title.y = element_text(face = 'bold', vjust = 2),
     panel.grid.minor.y = element_blank(),
-    panel.grid.minor.x = element_blank()
-  ) +
-  guides(colour = guide_legend(override.aes = list(size = 3), title = "Crop:"))
-
+    panel.grid.minor.x = element_blank(),
+    legend.position = "none"
+  ) 
+ 
 irrigation_plot
 
 ```
-**Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Here, we see that wheat is the most water intensive crop of the three.
+**Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Soil moisture availability was calculated using precipitation and evapotranspiration rates. Here, we see that wheat is the most water intensive crop of the three.
 
-# Step 6. Run two tests to make sure this function is working (KATHERYN)
+# Step 6. Run two tests to make sure this function is working
 ```{r}
 # source data
-here("irrigation.R")
+source(here("R/irrigation.R"))
 # put your test in a file
-# LET ME KNOW IF YOU HAVE PROBLEMS ACCESSING THIS? I JUST CREATED TWO BASIC FUNCTION TESTS USING EXPECT_EQUAL
-#test_file(here("irrigation_works.R"))
+test_file(here("tests","irrigation_works.R"))
 ```
