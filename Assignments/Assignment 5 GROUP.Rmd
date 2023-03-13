@@ -111,13 +111,21 @@ irrigation_results
 ### plot the relationship between soil moisture availability and irrigation amt
 ### facet_wrap by crop_type 
 irrigation_plot = ggplot(data = irrigation_results, aes(x= soil_moist_avail, y= irrigation_amt))+
-  geom_jitter(aes(color = crop_type))+ # better displays the points by spreading them out given our small dataset
-  facet_wrap(~ crop_type)+
+  geom_jitter(aes(color = crop_type), size = 2, alpha = 0.7) + # better displays the points by spreading them out given our small dataset
+  scale_color_manual(values = c('burlywood4', 'goldenrod2', 'wheat2')) +
+  scale_y_continuous(breaks = seq(from = 0, to = 6, by = 1)) +
+  facet_wrap(~ crop_type) +
   ggtitle("Relationship between soil moisture availability and the need for irrigation")+
   labs(x = "Soil Moisture Availability (mm)", 
-       y = "Irrigation Amount (mm)",
-       ) +
-  theme_minimal()
+       y = "Irrigation Amount (mm)") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(face = 'bold', vjust = -1),
+    axis.title.y = element_text(face = 'bold', vjust = 2),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.minor.x = element_blank()
+  ) +
+  guides(colour = guide_legend(override.aes = list(size = 3), title = "Crop:"))
 
 irrigation_plot
 
