@@ -1,4 +1,4 @@
 test_that("irrigation_works", {
-  expect_equal(irrigation_time(PE = 6, ET = 10), 0) 
-  expect_equal(irrigation_time(PE = 4, ET = 10), 1)
+  expect_equal(irrigation(precip = 2, ET = 3, crop_type = "barley"), c(-1, "No", 0))
+  expect_equal(irrigation(precip = 10, ET = 3, crop_type = "barley"), c(7, "Yes", 1))
 })
