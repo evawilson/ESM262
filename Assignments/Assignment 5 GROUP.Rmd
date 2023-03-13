@@ -112,7 +112,7 @@ irrigation_plot = ggplot(data = irrigation_results, aes(x= soil_moist_avail, y= 
 irrigation_plot
 
 ```
-**Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Soil moisture availability was calculated using precipitation and evapotranspiration rates. Here, we see that wheat is the most water intensive crop of the three.
+**Figure 1.** The relationship between soil moisture availability (mm) and irrigation amount (mm) for three crops: barley, corn and wheat. Soil moisture availability was calculated using precipitation and evapotranspiration rates. Here, we see that wheat is the most water intensive of the three crops.
 
 # Step 6. Run two tests to make sure this function is working
 ```{r}
