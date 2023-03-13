@@ -8,11 +8,10 @@
 irrigation=function(precip, ET, crop_type) {
   
   ### start with some error checking - we should never have negative ET or PE values
-  # if (length(ET) < 0)
-  #   return("ET value is negative")
-  # 
-  # if (length(precip) < 0)
-  #   return("PE value is negative")
+  ifelse (ET < 0, stop("Negative ET value supplied"), NA)
+  ifelse (precip < 0, stop("Negative PE value supplied"), NA)
+  ### we will also warn users if running function for non-compatible crop
+  ifelse (!crop_type %in% c('wheat', 'corn', 'barley'), return("Invalid crop type. Please enter either wheat, corn, or barley"), NA)
   
   
   ### use PE and ET as proxy for available soil moisture
